@@ -29,7 +29,7 @@ h1 .a{color:#ef4444}.b{color:#f59e0b}.c{color:#22c55e}.d{color:#3b82f6}.e{color:
 .tools button{padding:12px 16px;border-radius:14px;background:#ede9fe;font-weight:800;font-size:15px;color:#4c1d95}
 .tools button.sel{background:#7c3aed;color:#fff}
 .tools button.danger{background:#fee2e2;color:#991b1b}
-canvas#draw{width:100%;height:420px;background:#fff;border:3px solid #fcd34d;border-radius:18px;touch-action:none;display:block}
+canvas#draw{width:100%;height:320px;background:#fff;border:3px solid #fcd34d;border-radius:18px;touch-action:none;display:block}
 svg.scene{width:100%;height:auto;display:block;background:#e0f2fe;border-radius:18px;border:3px solid #fcd34d}
 svg.scene .part{cursor:pointer;stroke:#334155;stroke-width:2.5;stroke-linejoin:round;touch-action:manipulation}
 svg.scene .detail{stroke:#334155;stroke-width:2.5;stroke-linecap:round;fill:none;pointer-events:none}
@@ -114,6 +114,49 @@ svg.scene .part:hover{opacity:.85}
 .mazecell.exit svg{filter:drop-shadow(0 0 4px #facc15)}
 .mazecell.spider svg{width:92%;height:92%}
 .mazecell.exit svg{width:96%;height:96%}
+
+/* v6: layout moderno + áudio + botões de imagem */
+body{background:linear-gradient(180deg,#fff7ed 0%,#fdf2f8 55%,#eff6ff 100%)}
+h1{font-size:32px}
+.tabs{background:rgba(255,255,255,.75);padding:8px;border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.tabs button{background:#f5f5f4;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+.tabs button.on{background:linear-gradient(135deg,#ff8fab,#a855f7);color:#fff;box-shadow:0 4px 0 #be185d}
+.card{border:0;border-radius:28px;box-shadow:0 12px 32px rgba(0,0,0,.08)}
+.tools button{min-height:52px;padding:14px 18px;border-radius:18px}
+.listen-btn{background:linear-gradient(135deg,#fef08a,#fdba74)!important;color:#7c2d12!important;box-shadow:0 3px 0 #ea580c!important;font-size:17px!important}
+.scene-pick{justify-content:center}
+.scene-pick button{flex:0 0 auto!important;width:68px!important;height:68px!important;padding:0!important;border-radius:20px!important;overflow:hidden;border:3px solid #fff!important;box-shadow:0 3px 10px rgba(0,0,0,.15)}
+.scene-pick button.sel{outline:4px solid #a855f7!important;outline-offset:2px;transform:scale(1.06)}
+.scene-pick button img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* v6.1: caber na tela do celular (390x844 e 360x740) */
+h1{font-size:28px;margin:2px 0 2px}
+.sub{font-size:13px;margin:0 0 8px}
+.tabs{padding:6px}
+.tabs button{padding:10px 4px;font-size:15px}
+.card{padding:12px}
+.tools button{min-height:44px;padding:12px 14px}
+.listen-btn{min-height:44px!important;font-size:16px!important}
+.palette button{width:48px;height:48px}
+.scene-pick{flex-wrap:nowrap!important;overflow-x:auto;justify-content:flex-start!important;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.scene-pick button{width:56px!important;height:56px!important;flex:0 0 56px!important}
+#board{max-width:300px}
+#puzzlePreview p.hint{margin:2px 0 0}
+
+/* v6.2: caber ainda mais (essencial dentro da tela em 390x844) */
+h1{font-size:26px}
+.sub{font-size:12px}
+.tabs button{padding:8px 4px;font-size:14px}
+.tools:has(.listen-btn){margin:4px 0}
+svg.scene{max-width:260px;margin:0 auto}
+#board{max-width:260px}
+.maze-board{max-width:280px;margin:0 auto}
+
+/* v6.3: banner de celebração do quebra-cabeça mais compacto, sem encolher botões abaixo de 44px */
+.puzzle-cele-banner{padding:10px 12px}
+.puzzle-cele-banner .banner-fireworks{height:36px;margin-bottom:4px}
+.puzzle-cele-banner p{font-size:24px;margin:0 0 8px}
+.puzzle-cele-banner button{padding:12px 20px;font-size:18px;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -132,7 +175,7 @@ svg.scene .part:hover{opacity:.85}
  </nav>
 
  <section id="panel-draw" class="panel on card">
-  <canvas id="draw" width="480" height="420" aria-label="Tela de desenho"></canvas>
+  <div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="draw">🔊 Ouvir a instrução</button></div><canvas id="draw" width="480" height="320" aria-label="Tela de desenho"></canvas>
   <div class="palette" id="drawPalette" role="group" aria-label="Cores"></div>
   <div class="tools">
    <button type="button" data-size="4">Pincel fino</button>
@@ -150,7 +193,7 @@ svg.scene .part:hover{opacity:.85}
  </section>
 
  <section id="panel-paint" class="panel card">
-  <div class="scene-pick" id="scenePick">
+  <div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="paint">🔊 Ouvir a instrução</button></div><div class="scene-pick" id="scenePick">
    <button type="button" data-scene="fish" class="sel">Peixe</button>
    <button type="button" data-scene="butterfly">Borboleta</button>
    <button type="button" data-scene="house">Casa</button>
@@ -181,7 +224,7 @@ svg.scene .part:hover{opacity:.85}
  </section>
 
  <section id="panel-puzzle" class="panel card">
-  <div class="scene-pick" id="puzzlePick">
+  <div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="puzzle">🔊 Ouvir a instrução</button></div><div class="scene-pick" id="puzzlePick">
    <button type="button" data-scene="fish" class="sel">Peixe</button>
    <button type="button" data-scene="butterfly">Borboleta</button>
    <button type="button" data-scene="house">Casa</button>
@@ -215,7 +258,7 @@ svg.scene .part:hover{opacity:.85}
  </section>
 
  <section id="panel-memory" class="panel card">
-  <p class="score" id="memLevel">Nível 1 · 4 pares</p>
+  <div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="memory">🔊 Ouvir a instrução</button></div><p class="score" id="memLevel">Nível 1 · 4 pares</p>
   <div class="tools" style="justify-content:center"><button type="button" id="memResetLevel">Voltar ao nível 1</button></div>
   <div id="memBoard"></div>
   <div class="cele" id="memCele">PARABÉNS HELOÍSA, VOCÊ CONSEGUIU!</div>
@@ -225,7 +268,7 @@ svg.scene .part:hover{opacity:.85}
 
 
  <section id="panel-maze" class="panel card">
-  <p class="score" id="mazeLevel">Nível 1 · Leve a aranha até a flor!</p>
+  <div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="maze">🔊 Ouvir a instrução</button></div><p class="score" id="mazeLevel">Nível 1 · Leve a aranha até a flor!</p>
   <p class="maze-legend">🪨 contorna &nbsp;·&nbsp; 🕸️ toca para romper</p>
   <div id="mazeBoard" class="maze-board"></div>
   <p class="hint" id="mazeHint">Setas grandes ou arraste o dedo. Teia: toque para romper.</p>
@@ -239,7 +282,7 @@ svg.scene .part:hover{opacity:.85}
  </section>
 
  <section id="panel-colors" class="panel card">
-  <p class="bigq" id="colorQ">Toque no Vermelho!</p>
+  <p class="bigq" id="colorQ">Toque no Vermelho!</p><div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="colors">🔊 Ouvir a instrução</button></div>
   <p class="score" id="colorScore">⭐ 0 · Nível 1</p>
   <div id="colorPads"></div>
   <div class="cele" id="colorCele">Muito bem!</div>
@@ -248,7 +291,7 @@ svg.scene .part:hover{opacity:.85}
  </section>
 
  <section id="panel-count" class="panel card">
-  <p class="bigq">Quantos tem aqui?</p>
+  <p class="bigq">Quantos tem aqui?</p><div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="count">🔊 Ouvir a instrução</button></div>
   <p class="score" id="countScore">⭐ 0</p>
   <div id="countObjs"></div>
   <div class="tools" id="countOpts" style="justify-content:center"></div>
@@ -258,7 +301,7 @@ svg.scene .part:hover{opacity:.85}
  </section>
 
  <section id="panel-seq" class="panel card">
-  <p class="bigq">Repita a sequência!</p>
+  <p class="bigq">Repita a sequência!</p><div class="tools" style="justify-content:center"><button type="button" class="listen-btn" data-listen="seq">🔊 Ouvir a instrução</button></div>
   <p class="score" id="seqScore">Nível 1 · ⭐ 0</p>
   <div id="seqPads"></div>
   <div class="cele" id="seqCele">PARABÉNS HELOÍSA, VOCÊ CONSEGUIU!</div>
@@ -279,7 +322,19 @@ $$('.tabs button').forEach(b=>b.addEventListener('click',()=>{
  $$('.tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
  $$('.panel').forEach(p=>p.classList.remove('on'));
  $('#panel-'+b.dataset.tab).classList.add('on');
+ try{speakCurrent(b.dataset.tab)}catch(e){}
 }));
+
+ // ---------- v6: áudio de instrução ----------
+ let audioUnlocked=false;
+ document.addEventListener('pointerdown',function(){audioUnlocked=true},true);
+ const SCENE_PT={fish:'Peixe',butterfly:'Borboleta',house:'Casa',cat:'Gato',flower:'Flor',dog:'Cachorro',bird:'Pássaro',car:'Carro',pig:'Porquinha',puppy:'Filhote Patrulha',bluedog:'Cachorrinha Azul',clown:'Palhaços',pop:'Guerreiras Pop',turtle:'Tartaruga',rabbit:'Coelho',sun:'Sol',moon:'Lua',tree:'Árvore',plane:'Avião',train:'Trem'};
+ const NUM_PT=['','Um','Dois','Três','Quatro','Cinco','Seis','Sete','Oito','Nove','Dez','Onze','Doze','Treze','Quatorze','Quinze','Dezesseis','Dezessete','Dezoito','Dezenove','Vinte'];
+ function speakInstruction(text){ try{ if(!text||!window.speechSynthesis) return; window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='pt-BR'; u.rate=0.95; const v=pickPtVoice(); if(v) u.voice=v; window.speechSynthesis.speak(u); }catch(e){} }
+ function instructionFor(tab){ if(tab==='colors') return (typeof colorTarget!=='undefined'&&colorTarget)? 'Toque no '+colorTarget.n+'!' : 'Toque na cor certa!'; if(tab==='count') return 'Quantos tem aqui? Conte com calma e toque no número certo.'; const m={draw:'Passe o dedo na tela branca para desenhar.',paint:'Escolha uma cor e toque numa parte do desenho para pintar.',puzzle:'Monte igual à foto!',memory:'Toque em duas cartas. Se forem iguais, elas ficam abertas!',maze:'Leve a aranha até a flor!',seq:'Olhe as cores piscando e toque nelas na mesma ordem.'}; return m[tab]||''; }
+ function speakCurrent(tab){ if(!audioUnlocked) return; speakInstruction(instructionFor(tab)); }
+ function speakIfUnlocked(text){ if(audioUnlocked) speakInstruction(text); }
+ $$('[data-listen]').forEach(function(b){ b.addEventListener('click',function(){ speakInstruction(instructionFor(b.dataset.listen)); }); });
  // ---------- sacola embaralhada + celebracao (v5) ----------
  function dateSeed(){const d=new Date();return d.getFullYear()*372+(d.getMonth()+1)*31+d.getDate()}
  function seededShuffle(arr,seed){let a=seed>>>0;const rnd=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};const out=[...arr];for(let i=out.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));const tmp=out[i];out[i]=out[j];out[j]=tmp}return out}
@@ -624,7 +679,7 @@ buildPalette($('#paintPalette'),paintColor,c=>{paintColor=c;const sw=$('#paintCo
 function renderPaint(){
  $('#paintArea').innerHTML=SCENES[paintScene];
  const ph=PHOTOS[paintScene];
- $('#paintPhoto').innerHTML = ph ? `<img src="${ph}" style="width:100px;height:100px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.2)"><p class="hint" style="margin-top:4px">Olha como é de verdade!</p>` : '';
+ $('#paintPhoto').innerHTML = ph ? `<img src="${ph}" style="width:64px;height:64px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.2)"><p class="hint" style="margin-top:4px">Olha como é de verdade!</p>` : '';
  $('#paintArea').querySelectorAll('.part').forEach(p=>{
    const fillPart=()=>{p.style.fill=paintColor;p.setAttribute('fill',paintColor)};
    p.addEventListener('pointerdown',(e)=>{e.preventDefault();fillPart()});
@@ -632,13 +687,16 @@ function renderPaint(){
  });
 }
 $('#scenePick').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
- $('#scenePick').querySelectorAll('button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');paintScene=b.dataset.scene;paintBag.setLast(paintScene);renderPaint();
+ $('#scenePick').querySelectorAll('button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');paintScene=b.dataset.scene;paintBag.setLast(paintScene);renderPaint(); speakIfUnlocked(SCENE_PT[paintScene]+'!');
 }));
 $('#clearPaint').addEventListener('click',renderPaint);
-$('#nextPaint').addEventListener('click',()=>{paintScene=paintBag.next();$('#scenePick').querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x.dataset.scene===paintScene));renderPaint()});
+$('#nextPaint').addEventListener('click',()=>{paintScene=paintBag.next();$('#scenePick').querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x.dataset.scene===paintScene));renderPaint(); speakIfUnlocked(SCENE_PT[paintScene]+'!');});
 try{paintScene=paintBag.next();$('#scenePick').querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x.dataset.scene===paintScene))}catch(e){}
 renderPaint();
-// ---------- quebra-cabeça 2x2 ----------
+ // v6: botões de cena com imagem, não com nome
+ function renderSceneThumbs(){ ['scenePick','puzzlePick'].forEach(function(id){ const c=document.getElementById(id); if(!c) return; c.querySelectorAll('button[data-scene]').forEach(function(b){ const ph=PHOTOS[b.dataset.scene]; const nm=SCENE_PT[b.dataset.scene]||b.dataset.scene; b.setAttribute('aria-label',nm); if(ph){ b.textContent=''; const im=document.createElement('img'); im.src=ph; im.alt=''; b.appendChild(im); } }); }); }
+ try{renderSceneThumbs()}catch(e){}
+ // ---------- quebra-cabeça 2x2 ----------
 const PUZZLE_LEVELS=[2,3,4,5]; let puzzleLevelIdx=0;
 const puzzleBag=makeBag('puzzle',Object.keys(SCENES));
 let puzzleScene='fish',selected=null,puzzleN=PUZZLE_LEVELS[0];
@@ -675,12 +733,13 @@ function colorize(svgEl){
  svgEl.querySelectorAll('.part').forEach(p=>{const f=fills[p.dataset.part];if(f){p.setAttribute('fill',f);p.style.fill=f}});
 }
 function buildPuzzle(){
+ speakIfUnlocked('Monte igual à foto!');
  puzzleCelebrating=false;
  $('#cele').classList.remove('on');
  const _pb=$('#puzzleCeleBanner'); if(_pb) _pb.classList.remove('on');
  const pl=$('#puzzleLevel'); if(pl) pl.textContent='Nível '+(puzzleLevelIdx+1)+' · '+(puzzleN*puzzleN)+' peças';
  const _ph=PHOTOS[puzzleScene];
- $('#puzzlePreview').innerHTML = _ph ? `<img src="${_ph}" style="width:120px;height:120px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.2)"><p class="hint" style="margin-top:4px">Monte igual à foto!</p>` : '';
+ $('#puzzlePreview').innerHTML = _ph ? `<img src="${_ph}" style="width:80px;height:80px;object-fit:cover;border-radius:16px;border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.2)"><p class="hint" style="margin-top:4px">Monte igual à foto!</p>` : '';
  puzzleBuildId++;
  puzzleEdges={v:[],h:[]};
  for(let r=0;r<puzzleN;r++){puzzleEdges.v.push([]); for(let c=0;c<puzzleN-1;c++) puzzleEdges.v[r].push(Math.random()<0.5?-32:32)}
@@ -787,11 +846,12 @@ function buildColors(){
  [...pool].sort(()=>Math.random()-0.5).forEach(c=>{
    const b=document.createElement('button');b.type='button';b.className='colorpad';b.style.background=c.h;
    b.addEventListener('click',()=>{
-     if(c===colorTarget){const oldLvl=colorScore>=10?3:colorScore>=5?2:1; colorScore++; const newLvl=colorScore>=10?3:colorScore>=5?2:1; if(newLvl>oldLvl){celebrate(()=>{buildColors()})} else{$('#colorCele').classList.add('on');setTimeout(()=>{$('#colorCele').classList.remove('on');buildColors()},700)}}
+      speakInstruction(c.n+'!');
+      if(c===colorTarget){const oldLvl=colorScore>=10?3:colorScore>=5?2:1; colorScore++; const newLvl=colorScore>=10?3:colorScore>=5?2:1; if(newLvl>oldLvl){celebrate(()=>{buildColors()})} else{$('#colorCele').classList.add('on');setTimeout(()=>{$('#colorCele').classList.remove('on');buildColors()},700)}}
      else{b.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:250})}
    });
    pads.appendChild(b);
- });
+ }); speakIfUnlocked('Toque no '+colorTarget.n+'!');
 }
 $('#newColors').addEventListener('click',()=>{colorScore=0;buildColors()});
 buildColors();
@@ -799,6 +859,7 @@ buildColors();
 const COUNT_EMOJIS=['🐶','🐱','🐟','🦋','🌸','⭐','🚗','🐢'];
 let countScore=0,countAnswer=0;
 function buildCount(){
+ speakIfUnlocked('Quantos tem aqui? Conte com calma e toque no número certo.');
  const countLvl = countScore>=10 ? 3 : countScore>=5 ? 2 : 1;
  const max = countLvl===1 ? 5 : countLvl===2 ? 10 : 20;
  countAnswer = 1+Math.floor(Math.random()*max);
@@ -812,7 +873,8 @@ function buildCount(){
    const b=document.createElement('button');b.type='button';b.style.cssText='padding:14px 26px;border-radius:14px;background:#ede9fe;font-weight:900;font-size:22px;color:#4c1d95';
    b.textContent=v;
    b.addEventListener('click',()=>{
-     if(v===countAnswer){const oldLvl=countScore>=10?3:countScore>=5?2:1; countScore++; const newLvl=countScore>=10?3:countScore>=5?2:1; if(newLvl>oldLvl){celebrate(()=>{buildCount()})} else{$('#countCele').classList.add('on');setTimeout(()=>{$('#countCele').classList.remove('on');buildCount()},700)}}
+      speakInstruction((NUM_PT[v]||v)+'!');
+      if(v===countAnswer){const oldLvl=countScore>=10?3:countScore>=5?2:1; countScore++; const newLvl=countScore>=10?3:countScore>=5?2:1; if(newLvl>oldLvl){celebrate(()=>{buildCount()})} else{$('#countCele').classList.add('on');setTimeout(()=>{$('#countCele').classList.remove('on');buildCount()},700)}}
      else{b.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:250})}
    });
    box.appendChild(b);
@@ -837,6 +899,7 @@ function buildSeqPads(){
  });
 }
 function playSeq(){
+ speakIfUnlocked('Olhe as cores piscando e toque nelas na mesma ordem.');
  seq=[];for(let i=0;i<seqLevel;i++)seq.push(Math.floor(Math.random()*4));seqPos=0;
  $('#seqScore').textContent='Nível '+seqLevel+' · ⭐ '+seqScore;
  seqPlaying=true;const pads=$$('#seqPads .colorpad');
@@ -860,6 +923,7 @@ function nextMemorySymbols(n){
   return set;
 }
 function buildMemory(){
+ speakIfUnlocked('Toque em duas cartas. Se forem iguais, elas ficam abertas!');
  $('#memCele').classList.remove('on');memFlipped=[];memLock=false;
  const ml=$('#memLevel'); if(ml) ml.textContent='Nível '+(memLevelIdx+1)+' · '+memPairs+' pares';
  const symbols=nextMemorySymbols(memPairs);
@@ -888,6 +952,7 @@ $('#newMemory').addEventListener('click',buildMemory);
  let mazeLevelIdx=0, maze=null;
  function mazeKey(r,c){return r+','+c}
  function buildMaze(){
+ speakIfUnlocked('Leve a aranha até a flor!');
    const cfg=MAZE_LEVELS[mazeLevelIdx]; const N=cfg.size;
    const grid=[]; for(let r=0;r<N;r++){grid.push(new Array(N).fill(1))}
    const stack=[[1,1]]; grid[1][1]=0; const seen=new Set(['1,1']);
